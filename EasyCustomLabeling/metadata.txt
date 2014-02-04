@@ -1,0 +1,33 @@
+# This file contains metadata for your plugin. Beginning
+# with version 1.8 this is the preferred way to supply information about a
+# plugin. The current method of embedding metadata in __init__.py will
+# be supported until version 2.0
+
+# This file should be included when you package your plugin.
+
+[general]
+name=EasyCustomLabeling
+qgisMinimumVersion=2.0
+description=Allows to quickly duplicate layer into memory layer ready for data defined labeling
+version=0.5
+changelog=0.5 : QGis 2.0 compatible. 
+        - generates broken Call Outs on the fly when moving a labed . Nicer!
+        - callout can be hidden with attribute LblCO. 
+        - known issues: 
+            - memory Layer can't restore correctly unpinned labels. related to http://hub.qgis.org/issues/9148
+            - Still misses on button to hide Callouts
+            - Miss an option to choose datasource format to save layer
+
+tags=labeling
+
+homepage=http://hub.qgis.org/projects/easycustomlabeling
+tracker=http://hub.qgis.org/projects/easycustomlabeling
+repository=http://plugins.qgis.org/plugins/
+icon=icon.svg
+experimental=False
+
+deprecated=False
+
+author=Regis Haubourg (Agence de l'eau Adour Garonne)
+email=regis.haubourg@eau-adour-garonne.fr
+

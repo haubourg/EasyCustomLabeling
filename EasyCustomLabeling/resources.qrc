@@ -1,0 +1,6 @@
+<RCC> 
+  <qresource prefix="/plugins/EasyCustomLabeling" > 
+    <file>icon.png</file> 
+    <file>arrow.png</file> 
+  </qresource> 
+</RCC> 
