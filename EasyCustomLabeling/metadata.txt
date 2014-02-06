@@ -11,6 +11,9 @@ qgisMinimumVersion=2.0
 description=Allows to quickly duplicate layer into memory layer ready for data defined labeling
 version=0.6
 changelog=
+    0.7:  - solves date types bug
+            corrige le bug si la couche source contient des champs date
+            
     0.6: - better French translation
          - adds a tolerance before creating a callout for small displacements
          - adds help and tutorial video
