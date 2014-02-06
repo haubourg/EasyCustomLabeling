@@ -361,6 +361,8 @@ class EasyCustomLabeling:
         #convert field map to a list 
         sourceLayerFieldsList =[]
         for f in sourceLayerFields:
+            if f.type() == 14:
+                f.setType(10)
             sourceLayerFieldsList.append(f)
         #print 'sourceLayerFieldsList: ' + str(sourceLayerFieldsList)
         #copy sourceLayer fields into it
