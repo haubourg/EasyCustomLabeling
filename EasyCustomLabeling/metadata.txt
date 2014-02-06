@@ -9,7 +9,7 @@
 name=EasyCustomLabeling
 qgisMinimumVersion=2.0
 description=Allows to quickly duplicate layer into memory layer ready for data defined labeling
-version=0.6
+version=0.7
 changelog=
     0.7:  - solves date types bug
             corrige le bug si la couche source contient des champs date
