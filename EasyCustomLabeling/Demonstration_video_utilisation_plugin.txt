@@ -1,0 +1,43 @@
+Démonstration vidéo de l'utilisation du plugin QGIS Easy Custom Labeling:
+Bonjour!
+
+Ce plugin permet de simplement créer une couche d'étiquetage permettant d'exploiter les outils de modifications manuelles ou via des données de QGIS. 
+
+1. l'outil ajoute une icône dans la barre d'étiquetage
+
+
+2. sélectionnez votre couche de départ à étiqueter manuellement
+
+
+3. dupliquer la couche 
+
+Si une sélection est en cours, choisissez si vous souhaitez étiqueter toute la couche ou uniquement la sélection
+
+4. La couche crée (couche mémoire) est prête !
+
+
+5 déplacer vos étiquettes
+
+
+une tolérance de 2cm permet d'éviter de créer des traits de rappel trop courts
+
+
+5. Annuler un déplacement
+
+
+6. Masquer ou afficher des étiquettes (CTRL ou SHIFT + cliquer - glisser)
+
+7. rotation
+
+8. Modification complète d'une étiquette
+
+9. Sauver la couche et le projet
+
+> memory layer saver enregistre un fichier .mldata avec le projet
+
+10. modifications en masse via les attributs
+	- expression conditionnelle
+	- ou avec des sélection manuelles
+	
+
+ 

@@ -9,14 +9,32 @@
 name=EasyCustomLabeling
 qgisMinimumVersion=2.0
 description=Allows to quickly duplicate layer into memory layer ready for data defined labeling
-version=0.5
-changelog=0.5 : QGis 2.0 compatible. 
+version=0.6
+changelog=
+    0.6: - better French translation
+         - adds a tolerance before creating a callout for small displacements
+         - adds help and tutorial video
+         fr:
+         - traduction française complétée
+         - ajoute une tolérance pour les petits déplacements, sans création de trait de rappel
+         - ajoute l'aide en ligne
+         
+    0.5: QGis 2.0 compatible. 
         - generates broken Call Outs on the fly when moving a labed . Nicer!
-        - callout can be hidden with attribute LblCO. 
+        - callout can be hidden with attribute LblShowCO. 
         - known issues: 
-            - memory Layer can't restore correctly unpinned labels. related to http://hub.qgis.org/issues/9148
-            - Still misses on button to hide Callouts
+            - needs Memory layer Saver >= 3.2 to restore all labels correctly
+            - Still misses a button to hide Callouts
             - Miss an option to choose datasource format to save layer
+            - Callouts can only be modified in the session where labeling layer was created
+        fr:
+        - génère des traits de rappel brisés automatiquement au déplacement de l'étiquette
+        - Les traits de rappels peuvent être masqués par le champ LblShowCO
+        - problèmes connus:
+            - requiert l'extension Memory Layer Saver >=3.2
+            - Pas de bouton pour cacher les traits de rappel (édition manuelle de la table obligatoire)
+            - Pas de possibilité d'exporter directement en shp ou sqlite (problèmes de taille de champs)
+            - Les traits de rappels ne peuvent être modifiés qu'à la première édition. 
 
 tags=labeling
 

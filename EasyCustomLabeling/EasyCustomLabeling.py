@@ -129,6 +129,10 @@ class EasyCustomLabeling:
             finalY  = editGeom.asPolyline()[len(editGeom.asPolyline())-1].y()
             # print ('signal edited param: fieldname ' + fieldname +'; variant '+ str(variant) + '; FeatureId' +str(FeatureId) +'; originX '+ str(originX) + '; originY ' + str(originY) + '; finalX ' +str(finalX)+ '; finalY ' + str(finalY))
 
+            scale = iface.mapCanvas().scale()
+            radius_threshold = 1 #cm on screen
+
+
             if fieldname == 'LblX' :
                 if variant==NULL :   #case when user unpins the label > sets arrow back to arrow based on point location
                     # print ('lblX returns NULL test')
@@ -140,17 +144,22 @@ class EasyCustomLabeling:
                 newFinalX = variant
                 newFinalY = finalY
                 
-               
-                if newFinalX < originX:
-                    middleX = originX - abs(finalY - originY ) 
+                newWKT = 'LINESTRING('+ str(originX) +' '+  str(originY) + ' ,' + str(newFinalX)+ ' ' +str(finalY)+ ')'  
+                coLength =  QgsGeometry.fromWkt( newWKT ).length()
+                coscreenlength  = 100* coLength / scale 
+
+                if newFinalX < originX and coscreenlength >= radius_threshold:
+                    # middleX = originX - abs(finalY - originY ) 
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignH'), 'Right')
                     
-                else:
-                    middleX = originX + abs(finalY - originY ) 
+                elif newFinalX > originX :
+                    # middleX = originX + abs(finalY - originY ) 
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignH'), 'Left')
+              
                     
-                newWKT = 'LINESTRING('+ str(originX) +' '+  str(originY) + ' ,' + str(newFinalX)+ ' ' +str(finalY)+ ')'       
+                     
                 editedLayer.changeGeometry(FeatureId, QgsGeometry.fromWkt( newWKT ))
+
                 
             if fieldname == 'LblY':
                 if variant == NULL  :   #case when user unpins the label > sets arrow back to arrow based on point location
@@ -166,8 +175,10 @@ class EasyCustomLabeling:
                 deltaY =  abs(newFinalY - originY )
                 deltaX =  abs(newFinalX - originX )
 
-                #  todo test if label is close to origin point in a tolerance circle based on label size > do not draw arrow or reset existing
+
+            
                 
+
                 if newFinalX < originX   and newFinalY > originY    and  deltaY < deltaX : # cas quandran ul 1 ok
                     middleX = originX - deltaY
                     middleY = newFinalY
@@ -204,13 +215,30 @@ class EasyCustomLabeling:
                 newWKT = 'LINESTRING('+ str(originX) +' '+  str(originY) + ' , '+ str(middleX)+' '+ str(middleY) +' ,' + str(newFinalX)+ ' ' +str(newFinalY)+ ')'
                 editedLayer.changeGeometry(FeatureId, QgsGeometry.fromWkt( newWKT ))
                 
+                 # change visibility status  if label is close to origin point (screen distance tolerance)
+            
+               
+                coLength =  QgsGeometry.fromWkt( newWKT ).length()
+                coscreenlength  = 100* coLength / scale 
+
+                if coscreenlength < radius_threshold :
+                    print 'under radius_threshold'
+                    editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblShowCO'), '0')
+                else :
+                    editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblShowCO'), '1')
+
                 #If Y label bigger than Yorigin, update Valign 
-                if newFinalY < originY :
+                if newFinalY < originY and coscreenlength >= radius_threshold :
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignV'), 'Top')
-                else:
+
+                elif newFinalY > originY and coscreenlength >= radius_threshold:
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignV'), 'Base')
                 
+                else :
+                    editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignV'), 'Half')
+
                 
+
            #if label is masked or shown , does the same for CallOut
             elif fieldname == 'LblShow':   
                 if variant == 0 :
@@ -224,6 +252,8 @@ class EasyCustomLabeling:
 
             else :
                 return False, "fieldname not in LblX or LblY."
+           
+
              
         
   def unload( self):
