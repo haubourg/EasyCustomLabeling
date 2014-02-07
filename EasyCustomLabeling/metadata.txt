@@ -9,9 +9,17 @@
 name=EasyCustomLabeling
 qgisMinimumVersion=2.0
 description=Allows to quickly duplicate layer into memory layer ready for data defined labeling
-version=0.7
+version=1.0
 changelog=
-    0.7:  - solves date types bug
+    1.0: First stable version with full functions working
+         - activates callout modifications even after project load with Memory Layer plugin On
+         - solves NoneType errors on project closing when some uncommited edits remain
+         
+         fr:
+         - permet la modification des traits de rappel après la réouverture d'un projet enregistré
+         - résoud les erreurs à la fermeture de projet lorsqu'il reste des éditions non enregistrées.
+
+    0.7: - solves date types bug
             corrige le bug si la couche source contient des champs date
             
     0.6: - better French translation
