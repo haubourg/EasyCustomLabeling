@@ -64,9 +64,9 @@ Cliquer sur la couche vectorielle à étiqueter</translation>
     <message numerus="yes">
         <location filename="EasyCustomLabeling.py" line="276"/>
         <source>Use %n selected object(s) only for labeling ?</source>
-        <translation>
-            <numerusform>Créer une couche uniquement avec le(s) %n objets(s) sélectionné(s)?</numerusform>
-            <numerusform></numerusform>
+        <translation type="unfinished">
+            <numerusform>Utilisez uniquement %n objet sélectionné ? </numerusform>
+            <numerusform>Utilisez uniquement les %n objets sélectionnés ? </numerusform>
         </translation>
     </message>
 </context>

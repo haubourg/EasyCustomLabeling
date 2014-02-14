@@ -378,9 +378,10 @@ class EasyCustomLabeling:
                 self.iface.mapCanvas().freeze(0)
                 # print 'dialog keep selection: ' + str(ret)
                 return
-            # elif ret == 65536  :  # No button65536  use entire layer
-                
-            #elif ret == 16384 :
+            elif ret == 65536  :  # No button65536  use entire layer
+                print 'use entire layer'
+            elif ret == 16384 :
+                print 'use selection'
                
                 
         nbSelectedObjects = sourceLayer.selectedFeatureCount()
@@ -391,8 +392,12 @@ class EasyCustomLabeling:
             msgBox.setText(QtGui.QApplication.translate("EasyCustomLabeling","Your layer contains many objects. Continue anyway?", None, QtGui.QApplication.UnicodeUTF8))
             msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
             msgBox.setDefaultButton(QMessageBox.Ok) # This function was introduced in Qt 4.3.
-            ret = msgBox.exec_() #ret_val = 1024 si OK, 4194304 sinon
+            ret2 = msgBox.exec_() #ret_val = 1024 si OK, 4194304 sinon
             # print 'dialog many objects: ' + str(ret)
+            if ret2 != 1024:
+                print 'user cancel on too many object question'
+                return
+
 
                 
               
