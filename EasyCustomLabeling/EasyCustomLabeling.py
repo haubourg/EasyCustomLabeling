@@ -120,15 +120,16 @@ class EasyCustomLabeling:
 
   def labelLayerChecked(self):
 
-    print 'projet chargé: '
+    # print 'projet chargé: '
     #  Checks if some labeling layers are already there, and replug, if not already  labelLayerModified events
     layers = self.iface.legendInterface().layers()
     if layers :
       for layer in layers:
         if not layer:
             return
-        # layer = self.iface.layer()
-        # print 'labelLayerCheck triggered for ' + str(layer)
+        #  check for non vector datasources
+        elif not layer.type() == 0 : 
+            return
 
         dp = layer.dataProvider()
 
