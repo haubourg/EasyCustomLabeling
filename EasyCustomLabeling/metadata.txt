@@ -9,8 +9,15 @@
 name=EasyCustomLabeling
 qgisMinimumVersion=2.0
 description=Allows to quickly duplicate layer into memory layer ready for data defined labeling
-version=1.0
+version=1.2
 changelog=
+
+    1.2: add checks for non vector layer on project reload, when trying to reconnect existing labeling layers
+    
+    1.1: solves bug with selection if many objects are selected
+         fr translation improvement
+         
+         
     1.0: First stable version with full functions working
          - activates callout modifications even after project load with Memory Layer plugin On
          - solves NoneType errors on project closing when some uncommited edits remain
