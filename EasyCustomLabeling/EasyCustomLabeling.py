@@ -41,7 +41,7 @@ class EasyCustomLabeling:
     # Save reference to the QGIS interface
     self.iface = iface
     self.qgsVersion = unicode(QGis.QGIS_VERSION_INT)
-    #print '# EasyCustomLabeling debug trace: plugin loaded at ' + str(datetime.datetime.now())
+    print '# EasyCustomLabeling debug trace: plugin loaded at ' + str(datetime.datetime.now())
     #QgsMessageLog.logMessage('# EasyCustomLabeling debug trace: plugin loaded at ' + str(datetime.datetime.now()))
     # For i18n support, finds locale and translates with i18.qm files
     pluginName = 'EasyCustomLabeling'
@@ -170,7 +170,45 @@ class EasyCustomLabeling:
   def labelLayerModified(self, FeatureId, idx, variant):
         editedLayer = self.iface.activeLayer()
         # print 'signal caught by labelLayerModified: layer: '+str(editedLayer.id())+'; FeatureId ' + str(FeatureId) + ' ; idx ' + str(idx) + ' const: ' + str(variant)
+        # do nothing if layer is not a label layer 
+        if not editedLayer:
+            return
+        #  check for non vector datasources
+        elif not editedLayer.type() == 0 :
+            return
+            
+        dp = editedLayer.dataProvider()
 
+        LblXok = False
+        LblYok = False
+        LblAlignHok= False
+        LblAlignVok= False
+        LblShowCOok= False
+        LblShowok= False
+
+        for f in dp.fields():
+            if f.name() == 'LblX':
+                LblXok = True
+                # print 'LblXok'
+            elif f.name() == 'LblY':
+                LblYok = True  
+                # print 'LblYok'
+            elif f.name() == 'LblAlignH':
+                LblAlignHok = True 
+                # print 'LblAlignHok'
+            elif f.name() == 'LblAlignV':
+                LblAlignVok = True  
+                # print 'LblAlignVok'
+            elif f.name() == 'LblShowCO':
+                LblShowCOok = True
+                # print 'LblShowCOok' 
+            elif f.name() == 'LblShow':
+                LblShowok = True
+                # print 'LblShowok'
+
+        if not ( LblXok and LblYok and LblAlignHok and LblAlignVok and  LblShowCOok and LblShowok ):
+            iface.messageBar().pushMessage("Warning", QtGui.QApplication.translate("EasyCustomLabeling", "If your trying to edit a label with Easycustom labeling, Please keep the layer selected, else Callouts won't be drawn  \n if not please ignore this message.", None, QtGui.QApplication.UnicodeUTF8), level=0, duration=3)
+            return 
         #gets new attrib and geom > retune WKT with new label XY
         editFeature = QgsFeature()
         if editedLayer == None or editedLayer.getFeatures(QgsFeatureRequest().setFilterFid(FeatureId)).nextFeature(editFeature) is False  :
@@ -307,8 +345,9 @@ class EasyCustomLabeling:
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblShowCO'), '1')
                     
             # change visibility status of Callout if modified in attributes
-            elif fieldname == 'LblShowCO': # change visibility status of Callout if modified in attributes
-                print 'LblShowCO modifié '
+            # elif fieldname == 'LblShowCO': # change visibility status of Callout if modified in attributes
+            #     #todo
+            #     print 'LblShowCO modified > triggers a callout ch '
 
             else :
                 return False, "fieldname not in LblX or LblY."
