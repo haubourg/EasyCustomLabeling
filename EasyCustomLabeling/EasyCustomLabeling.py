@@ -170,20 +170,20 @@ class EasyCustomLabeling(QObject):
        
 
 
-
+  # @pyqtSlot(int, int, str)
   def labelLayerModified(self, FeatureId, idx, variant):
         sender = self.sender()
         # print ' declenche le signal' 
         # editedLayer = self.iface.activeLayer()
         if not sender or not sender.type()==0:
             return
-            print 'no sender caught or non vector layer'
+            # print 'no sender caught or non vector layer'
 
-        print 'sender : ' + str(sender)     +'  layer type : ' + str(sender.type()) 
+        # print 'sender : ' + str(sender)     +'  layer type : ' + str(sender.type()) 
 
+        # print 'type pythons : FeatureId: ' + str(type(FeatureId)) + '  idx: ' + str(type(idx)) + '  variant: ' + str(type(variant)) 
 
-
-        # print 'signal caught by labelLayerModified: layer: '+str(editedLayer.id())+'; FeatureId ' + str(FeatureId) + ' ; idx ' + str(idx) + ' const: ' + str(variant)
+        # print 'signal caught by labelLayerModified: layer: '+str(sender.id())+'; FeatureId ' + str(FeatureId) + ' ; idx ' + str(idx) + ' const: ' + str(variant)
         # do nothing if layer is not a label layer 
         # if not editedLayer:
         #     return
@@ -264,11 +264,11 @@ class EasyCustomLabeling(QObject):
                     # middleX = originX - abs(finalY - originY ) 
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignH'), 'Right')
                     
-                elif newFinalX > originX :
+                elif newFinalX > originX and coscreenlength >= radius_threshold:
                     # middleX = originX + abs(finalY - originY ) 
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignH'), 'Left')
-              
-                    
+                else :
+                    editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignH'), 'Center')
                      
                 editedLayer.changeGeometry(FeatureId, QgsGeometry.fromWkt( newWKT ))
 
@@ -556,7 +556,7 @@ class EasyCustomLabeling(QObject):
             labelFeature['LblSize'] = 9
             labelFeature['LblAShow'] = 1
             labelFeature['LblAlignV'] = 'Half'
-
+            labelFeature['LblAlignH'] = 'Center'
                       # displayFieldName = sourceLayer.displayField()
             # if displayFieldName :
             #     # print ' valeur du champ label : ' + str(sourceFeat[displayFieldName])
@@ -592,7 +592,8 @@ class EasyCustomLabeling(QObject):
         labelMapLayer.setCustomProperty("labeling/enabled","true" ) # default value
         #labelMapLayer.setCustomProperty("labeling/displayAll", "true") # force all labels to display
         labelMapLayer.setCustomProperty("labeling/priority", "10") # puts a high priority to labeling layer
-
+        labelMapLayer.setCustomProperty("labeling/multilineAlign","1") # multiline align to center
+        labelMapLayer.setCustomProperty("labeling/wrapChar", "%") # multiline break symbol
 
         #line properties case
         labelMapLayer.setCustomProperty("labeling/placement","4" ) 
