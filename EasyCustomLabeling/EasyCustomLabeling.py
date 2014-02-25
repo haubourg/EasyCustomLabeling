@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-"""
+""" 
 /***************************************************************************
 Name                  :EasyCustomLabeling
 Description          : plugin allowing a quick duplication of layer, ready to start manual customisation of labels (position, size, colors.. ) based on data fields
@@ -35,10 +35,12 @@ from EasyCustomLabelingDialog import EasyCustomLabelingDialog
 
 # load translation libraries
 
-class EasyCustomLabeling:
+class EasyCustomLabeling(QObject):
+# class EasyCustomLabeling:
 
   def __init__(self, iface):
     # Save reference to the QGIS interface
+    QObject.__init__(self) #init from  QObject parent
     self.iface = iface
     self.qgsVersion = unicode(QGis.QGIS_VERSION_INT)
     print '# EasyCustomLabeling debug trace: plugin loaded at ' + str(datetime.datetime.now())
@@ -119,6 +121,7 @@ class EasyCustomLabeling:
     #disconnects if label layers closed? 
 
   def labelLayerChecked(self):
+    
 
     # print 'projet chargé: '
     #  Checks if some labeling layers are already there, and replug, if not already  labelLayerModified events
@@ -162,21 +165,33 @@ class EasyCustomLabeling:
 
         if  LblXok and LblYok and LblAlignHok and LblAlignVok and  LblShowCOok and LblShowok :
             # print '-- label layer ok '
-            layer.attributeValueChanged.connect(self.labelLayerModified) 
+            layer.attributeValueChanged.connect(self.labelLayerModified)
+
        
 
 
 
   def labelLayerModified(self, FeatureId, idx, variant):
-        editedLayer = self.iface.activeLayer()
+        sender = self.sender()
+        # print ' declenche le signal' 
+        # editedLayer = self.iface.activeLayer()
+        if not sender or not sender.type()==0:
+            return
+            print 'no sender caught or non vector layer'
+
+        print 'sender : ' + str(sender)     +'  layer type : ' + str(sender.type()) 
+
+
+
         # print 'signal caught by labelLayerModified: layer: '+str(editedLayer.id())+'; FeatureId ' + str(FeatureId) + ' ; idx ' + str(idx) + ' const: ' + str(variant)
         # do nothing if layer is not a label layer 
-        if not editedLayer:
-            return
+        # if not editedLayer:
+        #     return
         #  check for non vector datasources
-        elif not editedLayer.type() == 0 :
-            return
-            
+        # elif not editedLayer.type() == 0 :
+        #     return
+        editedLayer = sender 
+        
         dp = editedLayer.dataProvider()
 
         LblXok = False
@@ -206,9 +221,9 @@ class EasyCustomLabeling:
                 LblShowok = True
                 # print 'LblShowok'
 
-        if not ( LblXok and LblYok and LblAlignHok and LblAlignVok and  LblShowCOok and LblShowok ):
-            iface.messageBar().pushMessage("Warning", QtGui.QApplication.translate("EasyCustomLabeling", "If your trying to edit a label with Easycustom labeling, Please keep the layer selected, else Callouts won't be drawn  \n if not please ignore this message.", None, QtGui.QApplication.UnicodeUTF8), level=0, duration=3)
-            return 
+        # if not ( LblXok and LblYok and LblAlignHok and LblAlignVok and  LblShowCOok and LblShowok ):
+        #     iface.messageBar().pushMessage("Warning", QtGui.QApplication.translate("EasyCustomLabeling", "If your trying to edit a label with Easycustom labeling plugin, Please keep the label layer selected, else Callouts won't be drawn  \n if not please ignore this message.", None, QtGui.QApplication.UnicodeUTF8), level=0, duration=3)
+        #     return 
         #gets new attrib and geom > retune WKT with new label XY
         editFeature = QgsFeature()
         if editedLayer == None or editedLayer.getFeatures(QgsFeatureRequest().setFilterFid(FeatureId)).nextFeature(editFeature) is False  :
@@ -620,6 +635,7 @@ class EasyCustomLabeling:
         # print 'runLabel exception loop '
         # if sourceLayer and not keepUserSelection :
         #     sourceLayer.removeSelection()
+        print 'exception caught'
         raise
         
     finally :

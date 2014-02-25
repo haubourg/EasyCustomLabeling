@@ -9,10 +9,19 @@
 name=EasyCustomLabeling
 qgisMinimumVersion=2.0
 description=Allows to quickly duplicate layer into memory layer ready for data defined labeling
-version=1.2
+version=1.3
 changelog=
-
-    1.2: add checks for non vector layer on project reload, when trying to reconnect existing labeling layers
+    1.3: resolves conflicts when multiple labeling layer are active.
+         supports having selected any layer in registry. 
+         
+         FR: solutionne les conflits d'édition d'étiquettes lorsque plusieurs couche étiquetable sont en édition
+             résoud les erreurs lorsque la couche sélectionnée n'est pas la couche d'étiquetage 
+             solutionne les messages d'erreurs lorsque des couches non raster sont présentes. 
+         
+    
+    1.2: add checks for non vector layer on project reload and labels modifications, when trying to reconnect existing labeling layers.
+         Add a warning if currently selected layer is not a labeling layer (Callouts won't be drawn)     
+         
     
     1.1: solves bug with selection if many objects are selected
          fr translation improvement
