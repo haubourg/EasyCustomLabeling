@@ -431,7 +431,7 @@ class EasyCustomLabeling(QObject):
             
             if ret == 4194304 : # cancel  button finish program
                 self.iface.mapCanvas().freeze(0)
-                # print 'dialog keep selection: ' + str(ret)
+                print 'dialog keep selection: ' + str(ret)
                 return
             elif ret == 65536  :  # No button65536  use entire layer
                 print 'use entire layer'
@@ -465,7 +465,10 @@ class EasyCustomLabeling(QObject):
         #asks for default field to use as labeling (thanks to Victor Axbom Layer to labeled layer plugin)
         # create the dialog
         self.dlg = EasyCustomLabelingDialog(sourceLayerProvider)
-        self.dlg.exec_()
+        ret_dlg_field = self.dlg.exec_()
+        #cancels if user cancels dialog:
+        if ret_dlg_field == 0 :  
+            return 
         # show the dialog
         # if self.dlg.exec_():
         #     return True# print 'dialog execution'
