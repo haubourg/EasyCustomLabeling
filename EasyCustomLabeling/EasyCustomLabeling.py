@@ -596,7 +596,7 @@ class EasyCustomLabeling(QObject):
         #labelMapLayer.setCustomProperty("labeling/displayAll", "true") # force all labels to display
         labelMapLayer.setCustomProperty("labeling/priority", "10") # puts a high priority to labeling layer
         labelMapLayer.setCustomProperty("labeling/multilineAlign","1") # multiline align to center
-        labelMapLayer.setCustomProperty("labeling/wrapChar", "%") # multiline break symbol
+        #labelMapLayer.setCustomProperty("labeling/wrapChar", "%") # multiline break symbol
 
         #line properties case
         labelMapLayer.setCustomProperty("labeling/placement","4" ) 
