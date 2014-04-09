@@ -115,7 +115,10 @@ class EasyCustomLabeling(QObject):
     #connects labelLayerCheck class to QgisInterface::currentLayerChanged signal (QgsMapLayer * layer)   
     #self.iface.currentLayerChanged.connect(self.labelLayerChecked)
     proj = QgsProject.instance()
+
     proj.readProject.connect(self.labelLayerChecked)  
+
+    # print 'init GUI connecting to readProject '
     # QObject.connect(self.iface, SIGNAL("currentLayerChanged ( QgsMapLayer *)"), self.labelLayerChecked)
 
     #disconnects if label layers closed? 
@@ -123,50 +126,76 @@ class EasyCustomLabeling(QObject):
   def labelLayerChecked(self):
     
 
-    # print 'projet chargé: '
+    # print 'project loaded. labelLayerchecked triggered '
     #  Checks if some labeling layers are already there, and replug, if not already  labelLayerModified events
-    layers = self.iface.legendInterface().layers()
+
+    layers = iface.legendInterface().layers()
+    # print layers
+
     if layers :
       for layer in layers:
+        # print layer.name() + ' | ' +  layer.capabilitiesString() +  ' | ' + layer.providerType() + ' | nb objets: ' + str(layer.featureCount())
         if not layer:
             return
+            # print'invalid layer > quit'
         #  check for non vector datasources
+
         elif not layer.type() == 0 : 
             return
+            # print 'non vector layer > quit'
 
-        dp = layer.dataProvider()
+        tag = layer.abstract()
+        # print 'tag: ' + tag
 
-        LblXok = False
-        LblYok = False
-        LblAlignHok= False
-        LblAlignVok= False
-        LblShowCOok= False
-        LblShowok= False
-
-        for f in dp.fields():
-            if f.name() == 'LblX':
-                LblXok = True
-                # print 'LblXok'
-            elif f.name() == 'LblY':
-                LblYok = True  
-                # print 'LblYok'
-            elif f.name() == 'LblAlignH':
-                LblAlignHok = True 
-                # print 'LblAlignHok'
-            elif f.name() == 'LblAlignV':
-                LblAlignVok = True  
-                # print 'LblAlignVok'
-            elif f.name() == 'LblShowCO':
-                LblShowCOok = True
-                # print 'LblShowCOok' 
-            elif f.name() == 'LblShow':
-                LblShowok = True
-                # print 'LblShowok'
-
-        if  LblXok and LblYok and LblAlignHok and LblAlignVok and  LblShowCOok and LblShowok :
-            # print '-- label layer ok '
+        if "<labeling_layer>" in tag :
+            # print 'tag reconnu'
             layer.attributeValueChanged.connect(self.labelLayerModified)
+        else :
+            return
+        # dp = layer.dataProvider()
+        # print 'provider ' + str(dp)  + '  | erreurs: ' + str(dp.errors())
 
+        # if layer.providerType() == 'memory':
+        #     dp.reloadData()
+        #     print 'reloading memory layer data '
+
+
+        # LblXok = False
+        # LblYok = False
+        # LblAlignHok= False
+        # LblAlignVok= False
+        # LblShowCOok= False
+        # LblShowok= False
+
+        # print dp.fields()
+        # print dp.fieldNameMap() 
+        # print '| before : fieldnamemap should not be empty !. If reload easycustomlabeling, this is not empty anymore. WHY?'
+        # # for f in dp.fields():
+        # for f in dp.fieldNameMap():
+        #     # print f.name()
+        #     print f 
+        #     if f == 'LblX':
+        #         LblXok = True
+        #         print 'LblXok'
+        #     elif f == 'LblY':
+        #         LblYok = True  
+        #         print 'LblYok'
+        #     elif f == 'LblAlignH':
+        #         LblAlignHok = True 
+        #         print 'LblAlignHok'
+        #     elif f == 'LblAlignV':
+        #         LblAlignVok = True  
+        #         print 'LblAlignVok'
+        #     elif f == 'LblShowCO':
+        #         LblShowCOok = True
+        #         print 'LblShowCOok' 
+        #     elif f == 'LblShow':
+        #         LblShowok = True
+        #         print 'LblShowok'
+
+        # if  LblXok and LblYok and LblAlignHok and LblAlignVok and  LblShowCOok and LblShowok :
+        #     print '-- label layer connecting attributeValueChanged to labelLayerModified '
+      
        
 
 
@@ -616,8 +645,8 @@ class EasyCustomLabeling(QObject):
         labelMapLayer.setCustomProperty("labeling/dataDefined/Family" ,"1~~0~~~~LblFont") 
         labelMapLayer.setCustomProperty("labeling/dataDefined/Show", "1~~0~~~~LblShow")
         labelMapLayer.setCustomProperty("labeling/dataDefined/AlwaysShow", "1~~0~~~~LblAShow")
-
-
+        # sets a tag in abstract metadata to help reconnect layer on project read (avoid having to read data, which causes problem with mem Layer Saver still populating data)
+        labelMapLayer.setAbstract('<labeling_layer> do not remove - used by EasyCustomLabeling plugin to reconnect labeling layers')
         # activates editing
         self.iface.setActiveLayer(labelMapLayer )
         labelLayer.startEditing()
