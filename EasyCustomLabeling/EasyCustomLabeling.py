@@ -147,9 +147,10 @@ class EasyCustomLabeling(QObject):
         tag = layer.abstract()
         # print 'tag: ' + tag
 
-        if "<labeling_layer>" in tag :
+        if "<labeling_layer>" in tag or "Label_" in layer.name() :
             # print 'tag reconnu'
             layer.attributeValueChanged.connect(self.labelLayerModified)
+        
         else :
             return
         # dp = layer.dataProvider()
@@ -647,6 +648,8 @@ class EasyCustomLabeling(QObject):
         labelMapLayer.setCustomProperty("labeling/dataDefined/AlwaysShow", "1~~0~~~~LblAShow")
         # sets a tag in abstract metadata to help reconnect layer on project read (avoid having to read data, which causes problem with mem Layer Saver still populating data)
         labelMapLayer.setAbstract('<labeling_layer> do not remove - used by EasyCustomLabeling plugin to reconnect labeling layers')
+        labelLayer.updateExtents()
+
         # activates editing
         self.iface.setActiveLayer(labelMapLayer )
         labelLayer.startEditing()

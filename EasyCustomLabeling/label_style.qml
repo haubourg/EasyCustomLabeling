@@ -6,9 +6,9 @@
         <layer pass="0" class="SimpleLine" locked="0">
           <prop k="capstyle" v="round"/>
           <prop k="color" v="0,0,0,255"/>
-          <prop k="color_expression" v="CASE WHEN  (&quot;LblShowCO&quot; = 0) OR $length &lt;1 THEN '255,255,255,0'  &#xa;WHEN (not &quot;LblShowCO&quot;) THEN '0,0,0,150'&#xa; END"/>
           <prop k="customdash" v="5;2"/>
           <prop k="customdash_unit" v="MM"/>
+          <prop k="customdash_expression" v="CASE WHEN LblShowCO = 1 THEN '2'ELSE '0;100' END"/>
           <prop k="joinstyle" v="round"/>
           <prop k="offset" v="0"/>
           <prop k="offset_unit" v="MM"/>
@@ -60,7 +60,7 @@
     <property key="labeling/fieldName" value="LblField"/>
     <property key="labeling/fontBold" value="false"/>
     <property key="labeling/fontCapitals" value="0"/>
-    <property key="labeling/fontFamily" value="Century"/>
+    <!-- <property key="labeling/fontFamily" value="Century"/> -->
     <property key="labeling/fontItalic" value="false"/>
     <property key="labeling/fontLetterSpacing" value="0"/>
     <property key="labeling/fontLimitPixelSize" value="false"/>
