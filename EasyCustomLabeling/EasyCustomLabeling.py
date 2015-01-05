@@ -131,28 +131,33 @@ class EasyCustomLabeling(QObject):
 
     layers = iface.legendInterface().layers()
     # print layers
-
+    tag =''
+    connectSuccess = 'f'
     if layers :
       for layer in layers:
+        tag =''
         # print layer.name() + ' | ' +  layer.capabilitiesString() +  ' | ' + layer.providerType() + ' | nb objets: ' + str(layer.featureCount())
         if not layer:
             return
             # print'invalid layer > quit'
         #  check for non vector datasources
-
         elif not layer.type() == 0 : 
             return
             # print 'non vector layer > quit'
-
         tag = layer.abstract()
+		
         # print 'tag: ' + tag
-
         if "<labeling_layer>" in tag or "Label_" in layer.name() :
-            # print 'tag reconnu'
+            # print 'ECL Debug: labeling layer found > reconnecting modification events to callout drawing'
             layer.attributeValueChanged.connect(self.labelLayerModified)
-        
+            connectSuccess = 't'
         else :
             return
+        
+        if connectSuccess == 'f':
+            iface.messageBar().pushMessage("Error", QtGui.QApplication.translate("EasyCustomLabeling", "EasyCustomLabeling Error: For some reason, at least one labeling layer could not be reconnected to plugin events. Callouts line will not follow when moving label", None, QtGui.QApplication.UnicodeUTF8), level=2, duration=10)
+
+        
         # dp = layer.dataProvider()
         # print 'provider ' + str(dp)  + '  | erreurs: ' + str(dp.errors())
 
