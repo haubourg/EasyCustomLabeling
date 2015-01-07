@@ -125,7 +125,6 @@ class EasyCustomLabeling(QObject):
 
   def labelLayerChecked(self):
     
-
     # print 'project loaded. labelLayerchecked triggered '
     #  Checks if some labeling layers are already there, and replug, if not already  labelLayerModified events
 
@@ -166,45 +165,7 @@ class EasyCustomLabeling(QObject):
         #     print 'reloading memory layer data '
 
 
-        # LblXok = False
-        # LblYok = False
-        # LblAlignHok= False
-        # LblAlignVok= False
-        # LblShowCOok= False
-        # LblShowok= False
-
-        # print dp.fields()
-        # print dp.fieldNameMap() 
-        # print '| before : fieldnamemap should not be empty !. If reload easycustomlabeling, this is not empty anymore. WHY?'
-        # # for f in dp.fields():
-        # for f in dp.fieldNameMap():
-        #     # print f.name()
-        #     print f 
-        #     if f == 'LblX':
-        #         LblXok = True
-        #         print 'LblXok'
-        #     elif f == 'LblY':
-        #         LblYok = True  
-        #         print 'LblYok'
-        #     elif f == 'LblAlignH':
-        #         LblAlignHok = True 
-        #         print 'LblAlignHok'
-        #     elif f == 'LblAlignV':
-        #         LblAlignVok = True  
-        #         print 'LblAlignVok'
-        #     elif f == 'LblShowCO':
-        #         LblShowCOok = True
-        #         print 'LblShowCOok' 
-        #     elif f == 'LblShow':
-        #         LblShowok = True
-        #         print 'LblShowok'
-
-        # if  LblXok and LblYok and LblAlignHok and LblAlignVok and  LblShowCOok and LblShowok :
-        #     print '-- label layer connecting attributeValueChanged to labelLayerModified '
-      
        
-
-
   # @pyqtSlot(int, int, str)
   def labelLayerModified(self, FeatureId, idx, variant):
         sender = self.sender()
@@ -639,9 +600,9 @@ class EasyCustomLabeling(QObject):
         labelLayer.attributeValueChanged.connect(self.labelLayerModified)
         
          #redraws registry and mapcanvas.
-        if hasattr(labelMapLayer, "setCacheImage" ):
+        if hasattr(labelMapLayer, "setCacheImage" ) and QGis.QGIS_VERSION_INT < 20600:
             labelMapLayer.setCacheImage(None )
-
+               
         labelMapLayer.triggerRepaint()
         self.iface.legendInterface().refreshLayerSymbology( labelMapLayer )
         self.iface.actionToggleEditing().trigger()
@@ -655,7 +616,9 @@ class EasyCustomLabeling(QObject):
         raise
         
     finally :
-        QgsMapLayerRegistry.instance().clearAllLayerCaches () #clean cache to allow mask layer to appear on refresh
+        if QGis.QGIS_VERSION_INT < 20600:
+            QgsMapLayerRegistry.instance().clearAllLayerCaches () #clean cache to allow mask layer to appear on refresh
+           
         # if sourceLayer and not keepUserSelection :
         #     sourceLayer.removeSelection()
             
