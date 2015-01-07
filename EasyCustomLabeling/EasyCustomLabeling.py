@@ -213,18 +213,7 @@ class EasyCustomLabeling(QObject):
         if not sender or not sender.type()==0:
             return
             # print 'no sender caught or non vector layer'
-
-        # print 'sender : ' + str(sender)     +'  layer type : ' + str(sender.type()) 
-
-        # print 'type pythons : FeatureId: ' + str(type(FeatureId)) + '  idx: ' + str(type(idx)) + '  variant: ' + str(type(variant)) 
-
-        # print 'signal caught by labelLayerModified: layer: '+str(sender.id())+'; FeatureId ' + str(FeatureId) + ' ; idx ' + str(idx) + ' const: ' + str(variant)
-        # do nothing if layer is not a label layer 
-        # if not editedLayer:
-        #     return
-        #  check for non vector datasources
-        # elif not editedLayer.type() == 0 :
-        #     return
+     
         editedLayer = sender 
         
         dp = editedLayer.dataProvider()
@@ -256,9 +245,7 @@ class EasyCustomLabeling(QObject):
                 LblShowok = True
                 # print 'LblShowok'
 
-        # if not ( LblXok and LblYok and LblAlignHok and LblAlignVok and  LblShowCOok and LblShowok ):
-        #     iface.messageBar().pushMessage("Warning", QtGui.QApplication.translate("EasyCustomLabeling", "If your trying to edit a label with Easycustom labeling plugin, Please keep the label layer selected, else Callouts won't be drawn  \n if not please ignore this message.", None, QtGui.QApplication.UnicodeUTF8), level=0, duration=3)
-        #     return 
+       
         #gets new attrib and geom > retune WKT with new label XY
         editFeature = QgsFeature()
         if editedLayer == None or editedLayer.getFeatures(QgsFeatureRequest().setFilterFid(FeatureId)).nextFeature(editFeature) is False  :
@@ -375,17 +362,7 @@ class EasyCustomLabeling(QObject):
                 else :
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblShowCO'), '1')
 
-                # #If Y label bigger than Yorigin, update Valign 
-                # if newFinalY < originY and coscreenlength >= radius_threshold :
-                #     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignV'), 'Top')
-
-                # elif newFinalY > originY and coscreenlength >= radius_threshold:
-                #     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignV'), 'Base')
-                
-                # else :
-                #editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblAlignV'), 'Half')
-
-                
+                          
 
            #if label is masked or shown , does the same for CallOut
             elif fieldname == 'LblShow':   
@@ -394,16 +371,14 @@ class EasyCustomLabeling(QObject):
                 else :
                     editedLayer.changeAttributeValue(FeatureId, editLayerProvider.fieldNameIndex('LblShowCO'), '1')
                     
-            # change visibility status of Callout if modified in attributes
-            # elif fieldname == 'LblShowCO': # change visibility status of Callout if modified in attributes
-            #     #todo
-            #     print 'LblShowCO modified > triggers a callout ch '
+     
 
             else :
                 return False, "fieldname not in LblX or LblY."
            
-
-             
+            # refresh map layer - attempt to solve issue when callout show only after refreshing labeling parameters
+            
+            editedLayer.triggerRepaint() 
         
   def unload( self):
     # disconnects signals todo
