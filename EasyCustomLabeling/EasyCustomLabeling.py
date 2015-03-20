@@ -149,8 +149,8 @@ class EasyCustomLabeling(QObject):
         # else :
             # return
 
-    if connectSuccess == 'f':
-        iface.messageBar().pushMessage("Error", QtGui.QApplication.translate("EasyCustomLabeling", "EasyCustomLabeling Error: For some reason, at least one labeling layer could not be reconnected to plugin events. Callouts line will not follow when moving label", None, QtGui.QApplication.UnicodeUTF8), level=2, duration=10)
+    # if connectSuccess == 'f':
+        # iface.messageBar().pushMessage("Error", QtGui.QApplication.translate("EasyCustomLabeling", "EasyCustomLabeling Error: For some reason, at least one labeling layer could not be reconnected to plugin events. Callouts line will not follow when moving label", None, QtGui.QApplication.UnicodeUTF8), level=2, duration=10)
 
         
       
