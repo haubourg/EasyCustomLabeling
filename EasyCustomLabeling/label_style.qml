@@ -8,7 +8,7 @@
           <prop k="color" v="0,0,0,255"/>
           <prop k="customdash" v="5;2"/>
           <prop k="customdash_unit" v="MM"/>
-          <prop k="customdash_expression" v="CASE WHEN LblShowCO = 1 THEN '2'ELSE '0;100' END"/>
+          <prop k="customdash_expression" v="CASE WHEN LblShowCO = 1 THEN '2;0' ELSE '0;2' END"/>
           <prop k="joinstyle" v="round"/>
           <prop k="offset" v="0"/>
           <prop k="offset_unit" v="MM"/>
