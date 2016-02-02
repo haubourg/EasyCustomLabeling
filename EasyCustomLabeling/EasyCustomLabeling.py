@@ -80,8 +80,8 @@ class EasyCustomLabeling(QObject):
     self.actionAbout = QAction(QIcon(os.path.join( os.path.dirname(__file__), "icon.png" )), QtGui.QApplication.translate("EasyCustomLabeling", "Help", None, QtGui.QApplication.UnicodeUTF8), self.iface.mainWindow())
 
     # connect the action to the run method
-    QObject.connect(self.actionLabel, SIGNAL("activated()"), self.runLabel)
-    QObject.connect(self.actionAbout, SIGNAL("activated()"), self.runAbout)
+    self.actionAbout.triggered.connect(self.runAbout)
+    self.actionLabel.triggered.connect(self.runLabel)
 
    # adds buttons to labeling toolbar if exists
     self.toolBar = self.iface.pluginToolBar()
