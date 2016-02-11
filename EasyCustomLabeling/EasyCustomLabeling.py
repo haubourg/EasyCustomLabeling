@@ -503,7 +503,7 @@ class EasyCustomLabeling(QObject):
             labelFeature = QgsFeature(labelLayerFields)
             geom = sourceFeat.geometry()
             #labelFeature.setGeometry(QgsGeometry.fromPoint(geom.centroid().asPoint())) # create geometry as centroid
-            WKTLine = 'LINESTRING('+ str(geom.centroid().asPoint().x() +0.0001) +' '+  str(geom.centroid().asPoint().y() +0.0001 ) + ' , '+ str(geom.centroid().asPoint().x())+ ' ' +str(geom.centroid().asPoint().y())+ ')'
+            WKTLine = 'LINESTRING('+ str(geom.centroid().asPoint().x() +0.0001) +' '+  str(geom.centroid().asPoint().y() ) + ' , '+ str(geom.centroid().asPoint().x())+ ' ' +str(geom.centroid().asPoint().y())+ ')'
             # print 'WKTLine: '+ WKTLine
             labelFeature.setGeometry(QgsGeometry.fromWkt( WKTLine )) # create geometry as centroid
             
