@@ -72,8 +72,8 @@ changelog[fr]=
             - Les traits de rappels ne peuvent être modifiés qu'à la première édition. 
 tags=labeling
 tags[fr]=étiquetage
-homepage=http://hub.qgis.org/projects/easycustomlabeling
-tracker=http://hub.qgis.org/projects/easycustomlabeling
+homepage=https://github.com/haubourg/EasyCustomLabeling
+tracker=https://github.com/haubourg/EasyCustomLabeling/issues
 repository=http://plugins.qgis.org/plugins/
 icon=icon.svg
 experimental=False
