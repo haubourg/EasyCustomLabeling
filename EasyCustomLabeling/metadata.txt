@@ -1,29 +1,23 @@
-# This file contains metadata for your plugin. Beginning
-# with version 1.8 this is the preferred way to supply information about a
-# plugin. The current method of embedding metadata in __init__.py will
-# be supported until version 2.0
-
-# This file should be included when you package your plugin.
-
 [general]
 name=EasyCustomLabeling
-qgisMinimumVersion=2.0
+qgisMinimumVersion=3.0
 description=Allows to quickly duplicate layer into memory layer ready for data defined labeling.  Requires Memory layer Saver >= 3.2 to restore all labels correctly
 description[fr]=Permet de rapidement une couche dédiée à l'étiquetage personnalisé. Nécessite  Memory layer Saver >= 3.2 pour sauver les couches d'étiquetage avec le projet.
 version=1.3.4
 about=EasyCustomLabeling is a plugin for QGIS, designed to simplify the work for manual and data defined labeling. The tool duplicates a data vector layer into a new memory layer made of lines, adds all necessary fields for advanced custom labeling  like label location, rotation, color, font, callout, alignements. The resulting layer is activated ready to use labeling tools. Data is saved in Memory Layer provider, which means it is NOT saved to a file or a database. To make thoses layers persistent, please install Memory Layer Saver v3.2 or higher plugin, that saves all memory layers to a qdatastream file along the project named myqgisprojectname.qgs.mldata.
-about[fr]=EasyCustomLabeling est une extension développée pour simplifer le travail d'étiquetage personnalisé et basé sur des champs de données. Cet outil duplique une couche vecteur dans une couche mémoire de lignes, et y ajoute tous les champs nécessaires pour l'étiquetage personnalisé (emplacement de l'étiquette, rotation, couleur, police, alignements...). La couche résultante est prête à être modifiée directement (éditable et outils d'étiquetages activés). Les données sont sauvées en mémoire, ce qui signifie qu'elles ne sont PAS sauvées dans un fichier ou une base. Pour sauver ces données et pouvoir réouvrir un projet avec les étiquettes, il faut installer l'extension Memory Layer Saver (v >=3.2), qui sauve toutes les couches mémoires dans un fichier Qdatastream (fichier: projet_qgis.qgs.mldata)
+about[fr]=EasyCustomLabeling est une extension développée pour simplifier le travail d'étiquetage personnalisé et basé sur des champs de données. Cet outil duplique une couche vecteur dans une couche mémoire de lignes, et y ajoute tous les champs nécessaires pour l'étiquetage personnalisé (emplacement de l'étiquette, rotation, couleur, police, alignements...). La couche résultante est prête à être modifiée directement (éditable et outils d'étiquetages activés). Les données sont sauvées en mémoire, ce qui signifie qu'elles ne sont PAS sauvées dans un fichier ou une base. Pour sauver ces données et pouvoir réouvrir un projet avec les étiquettes, il faut installer l'extension Memory Layer Saver (v >=3.2), qui sauve toutes les couches mémoires dans un fichier Qdatastream (fichier: projet_qgis.qgs.mldata)
 changelog=
+  2.0:   port to QGIS 2.99
 	1.3.4: use new style signal-slot. The issue was that the action was never activated on some machine without error or warning messages for the user. Funded by IT QGIS User Group. https://github.com/haubourg/EasyCustomLabeling/pull/11
 	1.3.3: solves error in labeling reconnection on project loads..again
     1.3.2: workaround label layer detection that causes label to be not in sync with callouts after project reloading
     1.3.1: cosmetic settings for Horizontal alignement centered if deltaX is under tolerance
            stops when users cancels in dialog for field's choice
-    
+
     1.3: resolves conflicts when multiple labeling layer are active.
-         supports having selected any layer in registry. 
+         supports having selected any layer in registry.
     1.2: add checks for non vector layer on project reload and labels modifications, when trying to reconnect existing labeling layers.
-         Add a warning if currently selected layer is not a labeling layer (Callouts won't be drawn)     
+         Add a warning if currently selected layer is not a labeling layer (Callouts won't be drawn)
     1.1: solves bug with selection if many objects are selected
          fr translation improvement
     1.0: First stable version with full functions working
@@ -33,24 +27,25 @@ changelog=
     0.6: - better French translation
          - adds a tolerance before creating a callout for small displacements
          - adds help and tutorial video
-    0.5: QGis 2.0 compatible. 
+    0.5: QGis 2.0 compatible.
         - generates broken Call Outs on the fly when moving a labed . Nicer!
-        - callout can be hidden with attribute LblShowCO. 
-        - known issues: 
+        - callout can be hidden with attribute LblShowCO.
+        - known issues:
             - needs Memory layer Saver >= 3.2 to restore all labels correctly
             - Still misses a button to hide Callouts
             - Miss an option to choose datasource format to save layer
             - Callouts can only be modified in the session where labeling layer was created
 changelog[fr]=
+  2.0:   port to QGIS 2.99
 	1.3.4: Corrige certains cas d'erreurs liés à une méthode obsolète. financé par le QGIS user Group Italien. https://github.com/haubourg/EasyCustomLabeling/pull/11
 	1.3.3: corrige des soucis de reconnection de flèches au chargement du projet.. de nouveau
     1.3.2: Contournement du bug de mauvaise reconnection des connecteurs d'étiquettes au chargement du projet
     1.3.1: - Amélioration du centrage des étiquettes lorsqu'elle sont déplacées de moins de 2cm
            - réactive l'annulation dans le dialogue de choix de champ
     1.3: - solutionne les conflits d'édition d'étiquettes lorsque plusieurs couche étiquetable sont en édition
-         - résoud les erreurs lorsque la couche sélectionnée n'est pas la couche d'étiquetage 
-         - solutionne les messages d'erreurs lorsque des couches non raster sont présentes. 
-    1.2: - Ajoute des vérifications pour les couches non vectorielles au chargement du projet.  
+         - résoud les erreurs lorsque la couche sélectionnée n'est pas la couche d'étiquetage
+         - solutionne les messages d'erreurs lorsque des couches non raster sont présentes.
+    1.2: - Ajoute des vérifications pour les couches non vectorielles au chargement du projet.
          - Ajoute un avertissement si la couche active n'est pas une couche compatible avec l'étiquetage
     1.1: Résolution d'un bug si trop d'objets sont sélectionnés
          Amélioration de la traduction française
@@ -62,14 +57,14 @@ changelog[fr]=
     0.6: - traduction française complétée
          - ajoute une tolérance pour les petits déplacements, sans création de trait de rappel
          - ajoute l'aide en ligne
-    0.5: QGis 2.0 compatible. 
+    0.5: QGis 2.0 compatible.
         - génère des traits de rappel brisés automatiquement au déplacement de l'étiquette
         - Les traits de rappels peuvent être masqués par le champ LblShowCO
         - problèmes connus:
             - requiert l'extension Memory Layer Saver >=3.2
             - Pas de bouton pour cacher les traits de rappel (édition manuelle de la table obligatoire)
             - Pas de possibilité d'exporter directement en shp ou sqlite (problèmes de taille de champs)
-            - Les traits de rappels ne peuvent être modifiés qu'à la première édition. 
+            - Les traits de rappels ne peuvent être modifiés qu'à la première édition.
 tags=labeling
 tags[fr]=étiquetage
 homepage=https://github.com/haubourg/EasyCustomLabeling
@@ -80,6 +75,5 @@ experimental=False
 
 deprecated=False
 
-author=Regis Haubourg (Agence de l'eau Adour Garonne)
-email=regis.haubourg@eau-adour-garonne.fr
-
+author=Regis Haubourg
+email=regis.haubourg@gmail.com
