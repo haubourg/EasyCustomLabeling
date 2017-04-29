@@ -17,7 +17,7 @@ The plug-in creates new attributes in the existing shapefile.
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
- *                                                                         * 
+ *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
@@ -28,23 +28,22 @@ The plug-in creates new attributes in the existing shapefile.
  *                                                                         *
  ***************************************************************************/
 """
+#from PyQt5.QtCore import ( QCoreApplication, QObject, QSettings, QLocale, QTranslator, QFileInfo, QVariant )
+from PyQt5.QtWidgets  import ( QDialog )
+#from qgis.core import *
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from qgis.core import *
-from ui_EasyCustomLabeling import Ui_EasyCustomLabeling
+from .ui_EasyCustomLabeling import Ui_EasyCustomLabeling
 
 class EasyCustomLabelingDialog(QDialog, Ui_EasyCustomLabeling):
-	
+
 	def __init__(self, ldp):
 		QDialog.__init__(self)
 		# Set up the user interface from Designer.
 		self.setupUi(self)
-		
+
 		self.loadFields(ldp)
-		
+
 	def loadFields(self, ldp):
 		fields = ldp.fieldNameMap()
-		for fieldname, index in fields.iteritems():
+		for fieldname, index in list(fields.items()):
 			self.labelfield.addItem(fieldname)
-		

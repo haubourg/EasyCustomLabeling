@@ -17,6 +17,7 @@ email                : regis dot haubourg at eau-adour-garonne.fr
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
+from __future__ import absolute_import
 def classFactory(iface): 
-  from EasyCustomLabeling import EasyCustomLabeling 
+  from .EasyCustomLabeling import EasyCustomLabeling 
   return EasyCustomLabeling(iface)
