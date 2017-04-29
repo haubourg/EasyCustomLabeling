@@ -28,8 +28,8 @@ import os.path
 
 # Import the PyQt and QGIS libraries
 from PyQt5.QtCore import ( QCoreApplication, QObject, QSettings, QLocale, QTranslator, QFileInfo, QVariant )
-from PyQt5.QtGui  import ( QDesktopServices, QIcon )
-from PyQt5.QtWidgets import ( QAction, QMessageBox )
+from PyQt5.QtGui  import ( QDesktopServices, QIcon,  )
+from PyQt5.QtWidgets import ( QAction, QMessageBox, QToolBar)
 from qgis.core import (QgsApplication, QgsGeometry, QgsProject, QgsMapLayer, QgsVectorLayer, QgsField, QgsFeature, QgsMessageLog )
 #from qgis.utils import *
 
@@ -80,9 +80,9 @@ class EasyCustomLabeling(QObject):
 
   def initGui(self):
     #Create actions triggered by the plugin
-    self.actionLabel = QAction( QIcon( ":/plugins/EasyCustomLabeling/icon.png" ), QtGui.QApplication.translate("EasyCustomLabeling", "Generates a layer ready for custom labeling tools", None, QtGui.QApplication.UnicodeUTF8), self.iface.mainWindow() )
+    self.actionLabel = QAction( QIcon( ":/plugins/EasyCustomLabeling/icon.png" ), QCoreApplication.translate("EasyCustomLabeling", "Generates a layer ready for custom labeling tools"), self.iface.mainWindow() )
 
-    self.actionAbout = QAction(QIcon(os.path.join( os.path.dirname(__file__), "icon.png" )), QtGui.QApplication.translate("EasyCustomLabeling", "Help", None, QtGui.QApplication.UnicodeUTF8), self.iface.mainWindow())
+    self.actionAbout = QAction(QIcon(os.path.join( os.path.dirname(__file__), "icon.png" )), QCoreApplication.translate("EasyCustomLabeling", "Help"), self.iface.mainWindow())
 
     # connect the action to the run method
     self.actionAbout.triggered.connect(self.runAbout)
@@ -114,8 +114,8 @@ class EasyCustomLabeling(QObject):
     if not toolbarFound :
         QMessageBox.warning( None, "DEBUG", "labeling toolbar not found. Please use menu Extension/Easy Custom Labeling")
 
-    self.iface.addPluginToMenu( "&" + QtGui.QApplication.translate("EasyCustomLabeling", "Easy Custom labeling", None, QtGui.QApplication.UnicodeUTF8), self.actionLabel)
-    self.iface.addPluginToMenu( "&" + QtGui.QApplication.translate("EasyCustomLabeling", "Easy Custom labeling", None, QtGui.QApplication.UnicodeUTF8), self.actionAbout)
+    self.iface.addPluginToMenu( "&" + QCoreApplication.translate("EasyCustomLabeling", "Easy Custom labeling"), self.actionLabel)
+    self.iface.addPluginToMenu( "&" + QCoreApplication.translate("EasyCustomLabeling", "Easy Custom labeling"), self.actionAbout)
 
     #connects labelLayerCheck class to QgisInterface::currentLayerChanged signal (QgsMapLayer * layer)
     #self.iface.currentLayerChanged.connect(self.labelLayerChecked)
@@ -155,7 +155,7 @@ class EasyCustomLabeling(QObject):
             # return
 
     # if connectSuccess == 'f':
-        # iface.messageBar().pushMessage("Error", QtGui.QApplication.translate("EasyCustomLabeling", "EasyCustomLabeling Error: For some reason, at least one labeling layer could not be reconnected to plugin events. Callouts line will not follow when moving label", None, QtGui.QApplication.UnicodeUTF8), level=2, duration=10)
+        # iface.messageBar().pushMessage("Error", QCoreApplication.translate("EasyCustomLabeling", "EasyCustomLabeling Error: For some reason, at least one labeling layer could not be reconnected to plugin events. Callouts line will not follow when moving label"), level=2, duration=10)
 
 
 
@@ -343,8 +343,8 @@ class EasyCustomLabeling(QObject):
 
     # Remove the plugin menu item and icon
     self.toolBar.removeAction( self.actionLabel)
-    self.iface.removePluginMenu( "&" + QtGui.QApplication.translate("EasyCustomLabeling", "Easy Custom labeling", None, QtGui.QApplication.UnicodeUTF8), self.actionLabel)
-    self.iface.removePluginMenu( "&" + QtGui.QApplication.translate("EasyCustomLabeling", "Easy Custom labeling", None, QtGui.QApplication.UnicodeUTF8), self.actionAbout)
+    self.iface.removePluginMenu( "&" + QCoreApplication.translate("EasyCustomLabeling", "Easy Custom labeling"), self.actionLabel)
+    self.iface.removePluginMenu( "&" + QCoreApplication.translate("EasyCustomLabeling", "Easy Custom labeling"), self.actionAbout)
 
     #remove action from mLabelToolBar if exists
     toolbars = self.iface.mainWindow().findChildren(QToolBar)
@@ -374,10 +374,10 @@ class EasyCustomLabeling(QObject):
     # keepUserSelection = False
     try :
         if not sourceLayer:
-           iface.messageBar().pushMessage("Error", QtGui.QApplication.translate("EasyCustomLabeling", "There is no layer currently selected, \n please click on the vector layer you need to label", None, QtGui.QApplication.UnicodeUTF8), level=0, duration=3)
+           iface.messageBar().pushMessage("Error", QCoreApplication.translate("EasyCustomLabeling", "There is no layer currently selected, \n please click on the vector layer you need to label"), level=0, duration=3)
            return
         if not sourceLayer.type() == sourceLayer.VectorLayer:
-           iface.messageBar().pushMessage("Error", QtGui.QApplication.translate("EasyCustomLabeling", "Current active layer is not a vector layer. \n Please click on the vector layer you need to label", None, QtGui.QApplication.UnicodeUTF8), level=0, duration=3)
+           iface.messageBar().pushMessage("Error", QCoreApplication.translate("EasyCustomLabeling", "Current active layer is not a vector layer. \n Please click on the vector layer you need to label"), level=0, duration=3)
            return
 
         # detect if selection exists on that layer
@@ -388,9 +388,9 @@ class EasyCustomLabeling(QObject):
         if not nbSelectedObjects == 0 :
             #dialog to ask if user wants to use current selection or not
             msgBox = QMessageBox()
-            msgBox.setIcon(QtGui.QMessageBox.Question)
+            msgBox.setIcon(QMessageBox.Question)
             msgBox.setWindowTitle ("EasyCustomLabeling")
-            msgBox.setText(QtGui.QApplication.translate("EasyCustomLabeling", "Use %n selected object(s) only for labeling ?" , None, QtGui.QApplication.UnicodeUTF8, nbSelectedObjects))
+            msgBox.setText(QCoreApplication.translate("EasyCustomLabeling", "Use %n selected object(s) only for labeling ?" , nbSelectedObjects))
             msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No |QMessageBox.Cancel)
             msgBox.setDefaultButton(QMessageBox.Ok)
 
@@ -414,7 +414,7 @@ class EasyCustomLabeling(QObject):
         if sourceLayer.selectedFeatureCount() > 500 :  #alert if  many objects selected
 
             msgBox = QMessageBox()
-            msgBox.setText(QtGui.QApplication.translate("EasyCustomLabeling","Your layer contains many objects. Continue anyway?", None, QtGui.QApplication.UnicodeUTF8))
+            msgBox.setText(QCoreApplication.translate("EasyCustomLabeling","Your layer contains many objects. Continue anyway?"))
             msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
             msgBox.setDefaultButton(QMessageBox.Ok) # This function was introduced in Qt 4.3.
             ret2 = msgBox.exec_() #ret_val = 1024 si OK, 4194304 sinon
@@ -606,7 +606,7 @@ class EasyCustomLabeling(QObject):
         labelMapLayer.triggerRepaint()
         self.iface.legendInterface().refreshLayerSymbology( labelMapLayer )
         self.iface.actionToggleEditing().trigger()
-        iface.messageBar().pushMessage("Avertissement", QtGui.QApplication.translate("EasyCustomLabeling", "Turn on editing mode on label layer to start customizing labels"), level=0, duration=3)
+        iface.messageBar().pushMessage("Avertissement", QCoreApplication.translate("EasyCustomLabeling", "Turn on editing mode on label layer to start customizing labels"), level=0, duration=3)
 
     except:
         # print 'runLabel exception loop '
@@ -630,7 +630,7 @@ class EasyCustomLabeling(QObject):
         # print 'end of runlabel Action'
 
   def runAbout(self):
-    #QMessageBox.about(None, QtGui.QApplication.translate("EasyCustomLabeling", "texte about", None, QtGui.QApplication.UnicodeUTF8), QtGui.QApplication.translate("EasyCustomLabeling", "<strong>Easy custom labeling v. 0.4,  Regis Haubourg (AEAG) - 2012. \n \n Action 1:This plugin duplicate a layer, transforming geometries into centroids, \n and adds all required fields for custom labeling. \n \n Action 2 - Arrow function draws lines between label and original object \n \n WARNING! This plugin requires to use Memory Layer Saver plugin if you want to save labels with project. \n Plugin memory layer saver 2.0 or higher is needed because of new gml behaviour (GDAL 1.9) \n \n Please send bugs or features requests here : http://hub.qgis.org/projects/easycustomlabeling </strong>", None, QtGui.QApplication.UnicodeUTF8))
+    #QMessageBox.about(None, QCoreApplication.translate("EasyCustomLabeling", "texte about"), QCoreApplication.translate("EasyCustomLabeling", "<strong>Easy custom labeling v. 0.4,  Regis Haubourg (AEAG) - 2012. \n \n Action 1:This plugin duplicate a layer, transforming geometries into centroids, \n and adds all required fields for custom labeling. \n \n Action 2 - Arrow function draws lines between label and original object \n \n WARNING! This plugin requires to use Memory Layer Saver plugin if you want to save labels with project. \n Plugin memory layer saver 2.0 or higher is needed because of new gml behaviour (GDAL 1.9) \n \n Please send bugs or features requests here : http://hub.qgis.org/projects/easycustomlabeling </strong>"))
     try:
         QDesktopServices.openUrl(QUrl("https://github.com/haubourg/EasyCustomLabeling/wiki"))
     except:
