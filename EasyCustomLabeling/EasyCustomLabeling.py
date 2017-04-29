@@ -18,13 +18,16 @@ email                : regis dot gmail.com
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
 #Python ressources
 import datetime
-import resources
+from . import resources
 import os.path
 
 # Import the PyQt and QGIS libraries
-from PyQt4 import QtGui
+from PyQt import QtGui
 from PyQt5.QtCore import ( QSettings, QAction, QLocale, QTranslator, QFileInfo )
 from PyQt5.QtGui  import ( QDesktopServices, QApplication, QMessageBox )
 from qgis.core import *
@@ -33,7 +36,7 @@ from qgis.core import (QgsGeometry, QgsProject, QgsMapLayer, QgsVectorLayer, Qgs
 from qgis.utils import *
 
 # Import the code for the dialog
-from EasyCustomLabelingDialog import EasyCustomLabelingDialog
+from .EasyCustomLabelingDialog import EasyCustomLabelingDialog
 
 # load translation libraries
 
@@ -44,8 +47,9 @@ class EasyCustomLabeling(QObject):
     # Save reference to the QGIS interface
     QObject.__init__(self) #init from  QObject parent
     self.iface = iface
-    self.qgsVersion = unicode(QGis.QGIS_VERSION_INT)
-    print '# EasyCustomLabeling debug trace: plugin loaded at ' + str(datetime.datetime.now())
+    self.qgsVersion = str(QGis.QGIS_VERSION_INT)
+    # fix_print_with_import
+    print('# EasyCustomLabeling debug trace: plugin loaded at ' + str(datetime.datetime.now()))
     #QgsMessageLog.logMessage('# EasyCustomLabeling debug trace: plugin loaded at ' + str(datetime.datetime.now()))
     # For i18n support, finds locale and translates with i18.qm files
     pluginName = 'EasyCustomLabeling'
@@ -227,7 +231,7 @@ class EasyCustomLabeling(QObject):
                     WKTLine = 'LINESTRING('+ str(originX+0.0001) +' '+  str(originY +0.0001 ) + ' , '+ str(originX)+ ' ' +str(originY)+ ')'
                     editedLayer.changeGeometry(FeatureId, QgsGeometry.fromWkt( WKTLine ))
                     return
-                if isinstance(variant, basestring): # test case, when editing from attribute table, variant is sent as text! converts to float
+                if isinstance(variant, str): # test case, when editing from attribute table, variant is sent as text! converts to float
                     variant = float(variant)
                 newFinalX = variant
                 newFinalY = finalY
@@ -255,7 +259,7 @@ class EasyCustomLabeling(QObject):
                     WKTLine = 'LINESTRING('+ str(originX+0.0001) +' '+  str(originY +0.0001 ) + ' , '+ str(originX)+ ' ' +str(originY)+ ')'
                     editedLayer.changeGeometry(FeatureId, QgsGeometry.fromWkt( WKTLine ))
                     return
-                if isinstance(variant, basestring):  # test case, when editing from attribute table, variant is sent as text! converts to float
+                if isinstance(variant, str):  # test case, when editing from attribute table, variant is sent as text! converts to float
                     variant = float(variant)
                 newFinalX = finalX
                 newFinalY = variant               
@@ -395,12 +399,15 @@ class EasyCustomLabeling(QObject):
             
             if ret == 4194304 : # cancel  button finish program
                 self.iface.mapCanvas().freeze(0)
-                print 'dialog keep selection: ' + str(ret)
+                # fix_print_with_import
+                print('dialog keep selection: ' + str(ret))
                 return
             elif ret == 65536  :  # No button65536  use entire layer
-                print 'use entire layer'
+                # fix_print_with_import
+                print('use entire layer')
             elif ret == 16384 :
-                print 'use selection'
+                # fix_print_with_import
+                print('use selection')
                
                 
         nbSelectedObjects = sourceLayer.selectedFeatureCount()
@@ -414,7 +421,8 @@ class EasyCustomLabeling(QObject):
             ret2 = msgBox.exec_() #ret_val = 1024 si OK, 4194304 sinon
             # print 'dialog many objects: ' + str(ret)
             if ret2 != 1024:
-                print 'user cancel on too many object question'
+                # fix_print_with_import
+                print('user cancel on too many object question')
                 return
 
 
@@ -605,7 +613,8 @@ class EasyCustomLabeling(QObject):
         # print 'runLabel exception loop '
         # if sourceLayer and not keepUserSelection :
         #     sourceLayer.removeSelection()
-        print 'exception caught'
+        # fix_print_with_import
+        print('exception caught')
         raise
         
     finally :
