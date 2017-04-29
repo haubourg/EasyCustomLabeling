@@ -30,7 +30,7 @@ import os.path
 from PyQt5.QtCore import ( QCoreApplication, QObject, QSettings, QLocale, QTranslator, QFileInfo, QVariant )
 from PyQt5.QtGui  import ( QDesktopServices, QIcon,  )
 from PyQt5.QtWidgets import ( QAction, QMessageBox, QToolBar)
-from qgis.core import (QgsApplication, QgsGeometry, QgsProject, QgsMapLayer, QgsVectorLayer, QgsField, QgsFeature, QgsMessageLog )
+from qgis.core import (QgsApplication, QgsGeometry, QgsProject, QgsMapLayer, QgsVectorLayer, QgsField, QgsFeature, QgsMessageLog, QgsFeatureRequest )
 #from qgis.utils import *
 
 # Import the code for the dialog
@@ -133,7 +133,7 @@ class EasyCustomLabeling(QObject):
     # print 'project loaded. labelLayerchecked triggered '
     #  Checks if some labeling layers are already there, and replug, if not already  labelLayerModified events
 
-    layers = iface.legendInterface().layers()
+    layers = iface.QgsMapCanvas.layers()
     # print layers
     tag =''
     connectSuccess = 'f'
@@ -182,6 +182,8 @@ class EasyCustomLabeling(QObject):
         LblShowCOok= False
         LblShowok= False
 
+        # print (variant)
+
         for f in dp.fields():
             if f.name() == 'LblX':
                 LblXok = True
@@ -220,12 +222,12 @@ class EasyCustomLabeling(QObject):
             finalY  = editGeom.asPolyline()[len(editGeom.asPolyline())-1].y()
             # print ('signal edited param: fieldname ' + fieldname +'; variant '+ str(variant) + '; FeatureId' +str(FeatureId) +'; originX '+ str(originX) + '; originY ' + str(originY) + '; finalX ' +str(finalX)+ '; finalY ' + str(finalY))
 
-            scale = iface.mapCanvas().scale()
+            scale = self.iface.mapCanvas().scale()
             radius_threshold = 1 #cm on screen
 
 
             if fieldname == 'LblX' :
-                if variant==NULL :   #case when user unpins the label > sets arrow back to arrow based on point location
+                if variant is None :   #case when user unpins the label > sets arrow back to arrow based on point location
                     # print ('lblX returns NULL test')
                     WKTLine = 'LINESTRING('+ str(originX+0.0001) +' '+  str(originY +0.0001 ) + ' , '+ str(originX)+ ' ' +str(originY)+ ')'
                     editedLayer.changeGeometry(FeatureId, QgsGeometry.fromWkt( WKTLine ))
@@ -253,7 +255,7 @@ class EasyCustomLabeling(QObject):
 
 
             if fieldname == 'LblY':
-                if variant == NULL  :   #case when user unpins the label > sets arrow back to arrow based on point location
+                if variant is None  :   #case when user unpins the label > sets arrow back to arrow based on point location
                     # print ('lblX returns NULL test')
                     WKTLine = 'LINESTRING('+ str(originX+0.0001) +' '+  str(originY +0.0001 ) + ' , '+ str(originX)+ ' ' +str(originY)+ ')'
                     editedLayer.changeGeometry(FeatureId, QgsGeometry.fromWkt( WKTLine ))
@@ -374,10 +376,10 @@ class EasyCustomLabeling(QObject):
     # keepUserSelection = False
     try :
         if not sourceLayer:
-           iface.messageBar().pushMessage("Error", QCoreApplication.translate("EasyCustomLabeling", "There is no layer currently selected, \n please click on the vector layer you need to label"), level=0, duration=3)
+           self.iface.messageBar().pushMessage("Error", QCoreApplication.translate("EasyCustomLabeling", "There is no layer currently selected, \n please click on the vector layer you need to label"), level=0, duration=3)
            return
         if not sourceLayer.type() == sourceLayer.VectorLayer:
-           iface.messageBar().pushMessage("Error", QCoreApplication.translate("EasyCustomLabeling", "Current active layer is not a vector layer. \n Please click on the vector layer you need to label"), level=0, duration=3)
+           self.iface.messageBar().pushMessage("Error", QCoreApplication.translate("EasyCustomLabeling", "Current active layer is not a vector layer. \n Please click on the vector layer you need to label"), level=0, duration=3)
            return
 
         # detect if selection exists on that layer
@@ -452,7 +454,7 @@ class EasyCustomLabeling(QObject):
     # creates new memory labelLayer and provider
         #labelLayer = QgsVectorLayer( "Point", "Label", "memory") # creates points  memory layer
         labelLayer = QgsVectorLayer( "LineString", "Label", "memory") # creates lines  memory layer - test v0.6
-        labelLayer.setLayerName("Label_"+sourceLayer.name())
+        labelLayer.setName("Label_"+sourceLayer.name())
         labelLayer.setCrs(sourceLayer.crs())
         labelLayerProvider = labelLayer.dataProvider()
         labelLayerFields = labelLayerProvider.fields()
@@ -525,7 +527,7 @@ class EasyCustomLabeling(QObject):
                 labelFeature[i] = a
             #labelFeature.setAttributes(attrs)
 
-            labelFeature['LblField'] = sourceFeat[self.dlg.labelfield.currentText()] #gets fields chosen by user in dialog
+            labelFeature['LblField'] = ret_dlg_field #gets fields chosen by user in dialog
             labelFeature['LblShow'] = 1
             labelFeature['LblSize'] = 9
             labelFeature['LblAShow'] = 1
@@ -538,16 +540,17 @@ class EasyCustomLabeling(QObject):
             # else:
             #     labelFeature['LblField'] = str(sourceFeat[0])
             #-- prefill some attributes examples (default = deactivated)
-            # labelFeature['LblX'] = str(geom.centroid().asPoint().x()) # coord x
-            # labelFeature['LblY'] = str(geom.centroid().asPoint().y()) # coord x
+            labelFeature['LblX'] = str(geom.centroid().asPoint().x()) # coord x
+            labelFeature['LblY'] = str(geom.centroid().asPoint().y()) # coord x
 
             labelLayerProvider.addFeatures( [ labelFeature ] )
             labelLayer.updateExtents()
 
-        labelMapLayer = QgsMapLayerRegistry.instance().addMapLayer(labelLayer, True)  # adds map layer to map registry
+        # labelMapLayer = QgsMapLayerRegistry.instance().addMapLayer(labelLayer, True)  # adds map layer to map registry
+        proj = QgsProject.instance()
+        labelMapLayer = proj.addMapLayer(labelLayer)  # adds map layer to map registry
 
-        # # customize style
-        rendererV2 = labelMapLayer.rendererV2()
+
         # creates default style for label (transparent point, default labeling )
         style_path = os.path.join( os.path.dirname(__file__), "label_style.qml" )
         (errorMsg, result) = labelMapLayer.loadNamedStyle( style_path )
@@ -604,9 +607,9 @@ class EasyCustomLabeling(QObject):
             labelMapLayer.setCacheImage(None )
 
         labelMapLayer.triggerRepaint()
-        self.iface.legendInterface().refreshLayerSymbology( labelMapLayer )
+        # self.iface.legendInterface().refreshLayerSymbology( labelMapLayer )
         self.iface.actionToggleEditing().trigger()
-        iface.messageBar().pushMessage("Avertissement", QCoreApplication.translate("EasyCustomLabeling", "Turn on editing mode on label layer to start customizing labels"), level=0, duration=3)
+        self.iface.messageBar().pushMessage("Avertissement", QCoreApplication.translate("EasyCustomLabeling", "Turn on editing mode on label layer to start customizing labels"), level=0, duration=3)
 
     except:
         # print 'runLabel exception loop '
@@ -617,8 +620,6 @@ class EasyCustomLabeling(QObject):
         raise
 
     finally :
-        if QGis.QGIS_VERSION_INT < 20600:
-            QgsMapLayerRegistry.instance().clearAllLayerCaches () #clean cache to allow mask layer to appear on refresh
 
         # if sourceLayer and not keepUserSelection :
         #     sourceLayer.removeSelection()
