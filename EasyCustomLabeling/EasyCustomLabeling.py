@@ -1,12 +1,12 @@
 # -*- coding: iso-8859-1 -*-
-""" 
+"""
 /***************************************************************************
 Name                  :EasyCustomLabeling
 Description          : plugin allowing a quick duplication of layer, ready to start manual customisation of labels (position, size, colors.. ) based on data fields
-Date                 : 23/01/204
-copyright            : (C) 2013 by regis haubourg - Agence de l'eau Adour Garonne
-version              : 0.5  port to QGIS v2 API and new SIP version
-email                : regis dot haubourg at eau-adour-garonne.fr
+Date                 : 29/04/2017
+copyright            : (C) 2013 by Régis Haubourg
+version              : 2.0  port to QGIS v3 API
+email                : regis dot gmail.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -25,9 +25,11 @@ import os.path
 
 # Import the PyQt and QGIS libraries
 from PyQt4 import QtGui
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import ( QSettings, QAction, QLocale, QTranslator, QFileInfo )
+from PyQt5.QtGui  import ( QDesktopServices, QApplication, QMessageBox )
 from qgis.core import *
+
+from qgis.core import (QgsGeometry, QgsProject, QgsMapLayer, QgsVectorLayer, QgsField, QgsFeature, QgsMessageLog )
 from qgis.utils import *
 
 # Import the code for the dialog
