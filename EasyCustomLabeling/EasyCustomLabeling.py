@@ -28,9 +28,12 @@ import os.path
 
 # Import the PyQt and QGIS libraries
 from PyQt5.QtCore import ( QCoreApplication, QObject, QSettings, QLocale, QTranslator, QFileInfo, QVariant )
-from PyQt5.QtGui  import ( QDesktopServices, QIcon,  )
+from PyQt5.QtGui  import ( QDesktopServices, QIcon )
 from PyQt5.QtWidgets import ( QAction, QMessageBox, QToolBar)
-from qgis.core import (QgsApplication, QgsGeometry, QgsProject, QgsMapLayer, QgsVectorLayer, QgsField, QgsFeature, QgsMessageLog, QgsFeatureRequest )
+
+from qgis.core import ( QgsApplication, QgsGeometry, QgsProject, QgsMapLayer, QgsVectorLayer, QgsField, QgsFeature, QgsMessageLog, QgsFeatureRequest )
+from qgis.gui import ( QgsMapCanvas )
+
 #from qgis.utils import *
 
 # Import the code for the dialog
@@ -133,7 +136,8 @@ class EasyCustomLabeling(QObject):
     # print 'project loaded. labelLayerchecked triggered '
     #  Checks if some labeling layers are already there, and replug, if not already  labelLayerModified events
 
-    layers = iface.QgsMapCanvas.layers()
+    layers = self.iface.mapCanvas().layers()
+
     # print layers
     tag =''
     connectSuccess = 'f'
