@@ -1,8 +1,8 @@
 [general]
 name=EasyCustomLabeling
-qgisMinimumVersion=2.0
-description=Allows to quickly duplicate layer into memory layer ready for data defined labeling.  Requires Memory layer Saver >= 3.2 to restore all labels correctly
-description[fr]=Permet de rapidement une couche dédiée à l'étiquetage personnalisé. Nécessite  Memory layer Saver >= 3.2 pour sauver les couches d'étiquetage avec le projet.
+qgisMinimumVersion=2.99
+description=Allows to quickly duplicate layer into memory layer ready for data defined labeling.  Requires Memory layer Saver >= 3.2 to restore all labels correctly BUT it is currently not yet available to QGIS 3
+description[fr]=Permet de rapidement une couche dédiée à l'étiquetage personnalisé.  Attention, nécessite toujours Memory Layer Saver pour rendre les couches persistantes, mais ce plugin n'est pas encore disponible pour QGIS3
 version=1.3.4
 about=EasyCustomLabeling is a plugin for QGIS, designed to simplify the work for manual and data defined labeling. The tool duplicates a data vector layer into a new memory layer made of lines, adds all necessary fields for advanced custom labeling  like label location, rotation, color, font, callout, alignements. The resulting layer is activated ready to use labeling tools. Data is saved in Memory Layer provider, which means it is NOT saved to a file or a database. To make thoses layers persistent, please install Memory Layer Saver v3.2 or higher plugin, that saves all memory layers to a qdatastream file along the project named myqgisprojectname.qgs.mldata.
 about[fr]=EasyCustomLabeling est une extension développée pour simplifier le travail d'étiquetage personnalisé et basé sur des champs de données. Cet outil duplique une couche vecteur dans une couche mémoire de lignes, et y ajoute tous les champs nécessaires pour l'étiquetage personnalisé (emplacement de l'étiquette, rotation, couleur, police, alignements...). La couche résultante est prête à être modifiée directement (éditable et outils d'étiquetages activés). Les données sont sauvées en mémoire, ce qui signifie qu'elles ne sont PAS sauvées dans un fichier ou une base. Pour sauver ces données et pouvoir réouvrir un projet avec les étiquettes, il faut installer l'extension Memory Layer Saver (v >=3.2), qui sauve toutes les couches mémoires dans un fichier Qdatastream (fichier: projet_qgis.qgs.mldata)
