@@ -396,7 +396,7 @@ class EasyCustomLabeling(QObject):
             msgBox = QMessageBox()
             msgBox.setIcon(QMessageBox.Question)
             msgBox.setWindowTitle ("EasyCustomLabeling")
-            msgBox.setText(QCoreApplication.translate("EasyCustomLabeling", "Use %n selected object(s) only for labeling ?" , nbSelectedObjects))
+            msgBox.setText(QCoreApplication.translate("EasyCustomLabeling", "Use "+ str(nbSelectedObjects) + " selected object(s) only for labeling ?" ))
             msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No |QMessageBox.Cancel)
             msgBox.setDefaultButton(QMessageBox.Ok)
 
