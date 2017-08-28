@@ -8,7 +8,7 @@
 [general]
 name=EasyCustomLabeling
 qgisMinimumVersion=2.0
-qgisMaximumVersion=2.90
+#qgisMaximumVersion=2.90
 description=Allows to quickly duplicate layer into memory layer ready for data defined labeling.  Requires Memory layer Saver >= 3.2 to restore all labels correctly
 description[fr]=Permet de rapidement une couche dédiée à l'étiquetage personnalisé. Nécessite  Memory layer Saver >= 3.2 pour sauver les couches d'étiquetage avec le projet.
 version=1.3.4.1
