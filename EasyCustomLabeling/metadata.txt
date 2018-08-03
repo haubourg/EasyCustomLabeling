@@ -8,6 +8,7 @@ version=2.0
 about=EasyCustomLabeling is a plugin for QGIS, designed to simplify the work for manual and data defined labeling. The tool duplicates a data vector layer into a new memory layer made of lines, adds all necessary fields for advanced custom labeling  like label location, rotation, color, font, callout, alignements. The resulting layer is activated ready to use labeling tools. Data is saved in Memory Layer provider, which means it is NOT saved to a file or a database. To make thoses layers persistent, please install Memory Layer Saver v3.2 or higher plugin, that saves all memory layers to a qdatastream file along the project named myqgisprojectname.qgs.mldata.
 about[fr]=EasyCustomLabeling est une extension développée pour simplifier le travail d'étiquetage personnalisé et basé sur des champs de données. Cet outil duplique une couche vecteur dans une couche mémoire de lignes, et y ajoute tous les champs nécessaires pour l'étiquetage personnalisé (emplacement de l'étiquette, rotation, couleur, police, alignements...). La couche résultante est prête à être modifiée directement (éditable et outils d'étiquetages activés). Les données sont sauvées en mémoire, ce qui signifie qu'elles ne sont PAS sauvées dans un fichier ou une base. Pour sauver ces données et pouvoir réouvrir un projet avec les étiquettes, il faut installer l'extension Memory Layer Saver (v >=3.2), qui sauve toutes les couches mémoires dans un fichier Qdatastream (fichier: projet_qgis.qgs.mldata)
 changelog=
+  2.1: fixes issue #25
   2.0:   port to QGIS 2.99
 	1.3.4: use new style signal-slot. The issue was that the action was never activated on some machine without error or warning messages for the user. Funded by IT QGIS User Group. https://github.com/haubourg/EasyCustomLabeling/pull/11
 	1.3.3: solves error in labeling reconnection on project loads..again
@@ -37,7 +38,8 @@ changelog=
             - Miss an option to choose datasource format to save layer
             - Callouts can only be modified in the session where labeling layer was created
 changelog[fr]=
-  2.0:   port to QGIS 2.99
+  2.1: correction du ticket #25
+  2.0: mise à jour pour QGIS 3
 	1.3.4: Corrige certains cas d'erreurs liés à une méthode obsolète. financé par le QGIS user Group Italien. https://github.com/haubourg/EasyCustomLabeling/pull/11
 	1.3.3: corrige des soucis de reconnection de flèches au chargement du projet.. de nouveau
     1.3.2: Contournement du bug de mauvaise reconnection des connecteurs d'étiquettes au chargement du projet
