@@ -216,7 +216,7 @@ class EasyCustomLabeling(QObject):
         else:
             # print 'traitement signal'
             editGeom = editFeature.geometry()
-            WKTLine = editGeom.exportToWkt()
+            WKTLine = editGeom.asWkt()
             editLayerProvider = editedLayer.dataProvider()
             fields = editLayerProvider.fields()
             fieldname= fields[idx].name()
