@@ -38,19 +38,19 @@ LOCALES =
 # translation
 SOURCES = \
 	__init__.py \
-	Qgis3Test.py Qgis3Test_dialog.py
+	EasyCustomLabeling.py
 
-PLUGINNAME = Qgis3Model
+PLUGINNAME = EasyCustomLabeling
 
 PY_FILES = \
 	__init__.py \
-	Qgis3Test.py Qgis3Test_dialog.py
+	EasyCustomLabeling.py EasyCustomLabelingDialog.py
 
-UI_FILES = Qgis3Test_dialog_base.ui
+UI_FILES = ui_EasyCustomLabeling.ui
 
-EXTRAS = metadata.txt icon.png
+EXTRAS = metadata.txt icon.png icon.svg
 
-EXTRA_DIRS =
+EXTRA_DIRS = /i18n
 
 COMPILED_RESOURCE_FILES = resources.py
 
@@ -67,7 +67,7 @@ PLUGIN_UPLOAD = $(c)/plugin_upload.py
 
 RESOURCE_SRC=$(shell grep '^ *<file' resources.qrc | sed 's@</file>@@g;s/.*>//g' | tr '\n' ' ')
 
-QGISDIR=.qgis2
+QGISDIR=.config/QGIS/.qgis3
 
 default: compile
 
@@ -100,7 +100,7 @@ test: compile transcompile
 deploy: compile doc transcompile
 	@echo
 	@echo "------------------------------------------"
-	@echo "Deploying plugin to your .qgis2 directory."
+	@echo "Deploying plugin to your .qgis3 directory."
 	@echo "------------------------------------------"
 	# The deploy  target only works on unix like operating system where
 	# the Python plugin directory is located at:
