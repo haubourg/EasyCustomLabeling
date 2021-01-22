@@ -1,3 +1,6 @@
+**Since QGIS3.10 , this plugin is deprecated. The features were ported to QGIS core (auxiliary storage, editable joined tables, layout connectors) as a team effort, with the support of several funders.** 
+
+
 EasyCustomLabeling
 ==================
 Easy manual and data defined labeling plugin for QGIS 
@@ -12,6 +15,7 @@ To make thoses layers persistent, please install Memory Layer Saver (v >=3.2) pl
 Please report any bug, issue or feature request either here on Github tracker or in QGIS redmine tracker
 
 
+**Cette extension est dépréciée depuis QGIS 3.10, elle n'est plus nécessaire. Les fonctionnalités ont été portées dans le coeur de QGIS depuis par une série de financeurs et de développeurs.**
 
 ---- version Francaise ------
 plugin QGIS d'étiquetage manuel simplifié
